@@ -1,9 +1,12 @@
-package co.edu.unicauca.openmarket.domain.service;
+/*
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
+ */
+package com.ragjc.software.openmarketclient.domain.service;
 
-
-import co.edu.unicauca.openmarket.access.IProductRepository;
-import co.edu.unicauca.openmarket.domain.Product;
-import co.edu.unicauca.openmarket.presentation.GUIProductsFind;
+import com.ragjc.software.openmarketclient.access.IProductRepository;
+import com.ragjc.software.openmarketclient.presentation.GUIProductsFind;
+import com.ragjc.software.openmarketcommons.domain.Product;
 import java.util.ArrayList;
 import java.util.List;
 import reloj.frameworkobsobs.Observado;
@@ -11,10 +14,9 @@ import reloj.frameworkobsobs.Observador;
 
 /**
  *
- * @author Libardo, Julio
+ * @author RodAlejo
  */
 public class ProductService extends Observado{
-
     // Ahora hay una dependencia de una abstracción, no es algo concreto,
     // no sabe cómo está implementado.
     private IProductRepository repository;
@@ -49,7 +51,7 @@ public class ProductService extends Observado{
 
     public List<Product> findAllProducts() {
         List<Product> products = new ArrayList<>();
-        products = repository.findAll();;
+        products = repository.findAll();
 
         return products;
     }
@@ -82,5 +84,4 @@ public class ProductService extends Observado{
             }
         });
     }
-
 }

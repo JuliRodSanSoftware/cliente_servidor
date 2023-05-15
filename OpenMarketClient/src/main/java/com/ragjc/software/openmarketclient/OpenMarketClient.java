@@ -1,23 +1,22 @@
+/*
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ */
 
-package co.edu.unicauca.openmarket.main;
+package com.ragjc.software.openmarketclient;
 
-import co.edu.unicauca.openmarket.access.Factory;
-import co.edu.unicauca.openmarket.access.IProductRepository;
-import co.edu.unicauca.openmarket.domain.service.ProductService;
-import co.edu.unicauca.openmarket.presentation.GUIProducts;
-import co.edu.unicauca.openmarket.presentation.GUIProductsFind;
+import com.ragjc.software.openmarketclient.access.Factory;
+import com.ragjc.software.openmarketclient.access.IProductRepository;
+import com.ragjc.software.openmarketclient.domain.service.ProductService;
+import com.ragjc.software.openmarketclient.presentation.*;
+
 
 /**
  *
- * @author Libardo Pantoja
+ * @author RodAlejo
  */
-public class Main {
+public class OpenMarketClient {
 
-    /**
-     * @param args the command line arguments
-     */
     public static void main(String[] args) {
-        
         IProductRepository repository = Factory.getInstance().getRepository("remote");
         ProductService productService = new ProductService(repository);
         
@@ -27,5 +26,4 @@ public class Main {
         instance2.setVisible(true);
         productService.addObservador(instance2);
     }
-    
 }
