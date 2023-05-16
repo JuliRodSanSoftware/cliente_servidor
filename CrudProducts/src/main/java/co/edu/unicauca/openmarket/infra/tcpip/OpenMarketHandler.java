@@ -6,7 +6,9 @@ import co.edu.unicauca.openmarket.domain.service.ProductService;
 import co.unicauca.strategyserver.infra.ServerHandler;
 import com.ragjc.software.openmarketcommons.infra.Protocol;
 import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.ragjc.software.openmarketcommons.infra.JsonError;
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -50,6 +52,20 @@ public class OpenMarketHandler  extends ServerHandler{
                     response = Boolean.toString(processPutCustomer(protocolRequest));
 
                 }
+                
+                if (protocolRequest.getAction().equals("delete")) {
+                    // Agregar un customer    
+                    response = Boolean.toString(processDeleteCustomer(protocolRequest));
+
+                }
+                
+                break;
+                
+            case "products":
+                if (protocolRequest.getAction().equals("get")) {
+                    // Consultar un customer
+                    response = processGetProducts();
+                }
                 break;
         }
         return response;
@@ -85,7 +101,6 @@ public class OpenMarketHandler  extends ServerHandler{
     
     private boolean processPostCustomer(Protocol protocolRequest) {
         Product product = new Product();
-        // Reconstruir el customer a partid de lo que viene en los parámetros
         product.setName(protocolRequest.getParameters().get(0).getValue());
         product.setDescription(protocolRequest.getParameters().get(1).getValue());
         boolean bandera = getService().saveProduct(product.getName(), product.getDescription());
@@ -95,7 +110,6 @@ public class OpenMarketHandler  extends ServerHandler{
     private boolean processPutCustomer(Protocol protocolRequest) {
         Product product = new Product();
         Long id = 0L;
-        // Reconstruir el customer a partid de lo que viene en los parámetros
         id  = Long.parseLong(protocolRequest.getParameters().get(0).getValue());
         product.setName(protocolRequest.getParameters().get(1).getValue());
         product.setDescription(protocolRequest.getParameters().get(2).getValue());
@@ -103,6 +117,13 @@ public class OpenMarketHandler  extends ServerHandler{
         return bandera;
     }
     
+    
+    private boolean processDeleteCustomer(Protocol protocolRequest) {
+        Long id = 0L;
+        id  = Long.parseLong(protocolRequest.getParameters().get(0).getValue());
+        boolean bandera = getService().deleteProduct(id);
+        return bandera;
+    }
     
     
     public ProductService getService() {
@@ -113,5 +134,10 @@ public class OpenMarketHandler  extends ServerHandler{
     public void setService(ProductService service) {
         this.service = service;
     } 
+
+    private String processGetProducts() {
+    
+        return new Gson().toJson(service.findAllProducts());
+    }
     
 }

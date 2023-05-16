@@ -3,11 +3,9 @@ package co.edu.unicauca.openmarket.domain.service;
 
 import co.edu.unicauca.openmarket.access.IProductRepository;
 import co.edu.unicauca.openmarket.domain.Product;
-import co.edu.unicauca.openmarket.presentation.GUIProductsFind;
 import java.util.ArrayList;
 import java.util.List;
 import reloj.frameworkobsobs.Observado;
-import reloj.frameworkobsobs.Observador;
 
 /**
  *
@@ -30,7 +28,7 @@ public class ProductService extends Observado{
     }
 
 
-    public boolean saveProduct(String name, String description) {
+    public synchronized boolean saveProduct(String name, String description) {
         
         Product newProduct = new Product();
         newProduct.setName(name);
@@ -41,7 +39,7 @@ public class ProductService extends Observado{
             return false;
         }
         boolean respuesta = repository.save(newProduct);
-        this.notificar();
+        //this.notificar();
         return respuesta ;
         
 
@@ -58,29 +56,20 @@ public class ProductService extends Observado{
         return repository.findById(id);
     }
     
-    public boolean deleteProduct(Long id){
+    public synchronized boolean deleteProduct(Long id){
         boolean result;
         result = repository.delete(id);
-        this.notificar();
+        //this.notificar();
         return result;
     }
 
-    public boolean editProduct(Long productId, Product prod) {
+    public synchronized boolean editProduct(Long productId, Product prod) {
         
         //Validate product
         if (prod == null || prod.getName().isBlank() ) {
             return false;
         }
         return repository.edit(productId, prod);
-    }
-
-    public void addObservador(GUIProductsFind instance) {
-        this.addObservador(new Observador() {
-            @Override
-            public void actualizar() {
-                instance.actualizar();
-            }
-        });
     }
 
 }

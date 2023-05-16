@@ -73,6 +73,7 @@ public class ProductService extends Observado{
         if (prod == null || prod.getName().isBlank() ) {
             return false;
         }
+        this.notificar();
         return repository.edit(productId, prod);
     }
 

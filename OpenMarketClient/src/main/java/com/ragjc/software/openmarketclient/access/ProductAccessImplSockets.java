@@ -255,6 +255,8 @@ public class ProductAccessImplSockets implements IProductAccess{
     }
     
     private List<Product> jsonToProducts(String jsonProducts) {
+        
+        System.out.println("JSON: "+ jsonProducts);
         Gson gson = new Gson();
 
         Type founderListType = new TypeToken<ArrayList<Product>>(){}.getType();
