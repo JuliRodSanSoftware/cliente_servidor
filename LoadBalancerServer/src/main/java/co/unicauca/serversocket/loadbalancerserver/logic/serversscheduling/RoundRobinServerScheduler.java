@@ -26,11 +26,17 @@ public class RoundRobinServerScheduler extends Subject implements IServerSchedul
 
     @Override
     public ServerInfo selectServer(Socket socket) {
+        long startTime = System.currentTimeMillis();
         // int hashcode = socket.getInetAddress().hashCode();
         // return this.serverList.get( hashcode % serverList.size() );
         requestNumber++;
         actualServer = servers.getServer(requestNumber % servers.size());
         this.notifyAllObserves();
+        
+        
+        long endTime = System.currentTimeMillis();
+        long elapsedTime = endTime - startTime;
+        System.out.println("Tiempo transcurrido: " + elapsedTime + " milisegundos");
         return actualServer;
     }
 

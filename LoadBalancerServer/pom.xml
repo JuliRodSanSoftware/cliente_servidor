@@ -7,9 +7,9 @@
     <packaging>jar</packaging>
     <dependencies>
         <dependency>
-            <groupId>${project.groupId}</groupId>
-            <artifactId>ServerSocketTemplate</artifactId>
-            <version>${project.version}</version>
+            <groupId>co.unicauca</groupId>
+            <artifactId>strategyserver</artifactId>
+            <version>1.0</version>
         </dependency>
     </dependencies>
     <properties>

@@ -1,3 +1,4 @@
+
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
@@ -7,11 +8,11 @@ package co.unicauca.serversocket.loadbalancerserver.logic;
 
 import co.unicauca.serversocket.loadbalancerserver.infra.ILoadBalancerConnection;
 import co.unicauca.serversocket.loadbalancerserver.infra.LoadBalancerSocket;
-import co.unicauca.serversocket.serversockettemplate.infra.ServerHandler;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import co.unicauca.serversocket.loadbalancerserver.logic.serversscheduling.IServerScheduler;
+import co.unicauca.strategyserver.infra.ServerHandler;
 
 /**
  *
@@ -42,18 +43,21 @@ public class LoadBalancerHandler extends ServerHandler {
    
     
     @Override
-    public void processRequest(String requestJson) {
+    public String processRequest(String requestJson) {
+        
+        String response="";
         try {
             ILoadBalancerConnection conn = this.getLoadBalancerConnection();
             conn.setServer(serverScheduler.selectServer(this.getSocket()));
             conn.connect();
-            this.respond(conn.sendRequest(requestJson));
+            response = conn.sendRequest(requestJson);
             System.out.println("Pasando por el balanceador ...");
             conn.closeStream();
             conn.disconnect();
         } catch (IOException ex) {
             Logger.getLogger(LoadBalancerHandler.class.getName()).log(Level.SEVERE, null, ex);
         }
+        return response;
     }
     
     private ILoadBalancerConnection getLoadBalancerConnection(){

@@ -9,7 +9,7 @@ import co.unicauca.serversocket.loadbalancerserver.logic.LoadBalancerHandler;
 import co.unicauca.serversocket.loadbalancerserver.logic.servermanagement.HashListServerManagement;
 import co.unicauca.serversocket.loadbalancerserver.logic.serversscheduling.IServerScheduler;
 import co.unicauca.serversocket.loadbalancerserver.logic.serversscheduling.RoundRobinServerScheduler;
-import co.unicauca.serversocket.serversockettemplate.infra.ServerSocketMultiThread;
+import co.unicauca.strategyserver.infra.ServerSocketMultiThread; 
 
 /**
  *
