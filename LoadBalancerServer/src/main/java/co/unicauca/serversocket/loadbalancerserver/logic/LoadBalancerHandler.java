@@ -47,13 +47,20 @@ public class LoadBalancerHandler extends ServerHandler {
         
         String response="";
         try {
+            MeasureTime.startTime();
+            
             ILoadBalancerConnection conn = this.getLoadBalancerConnection();
             conn.setServer(serverScheduler.selectServer(this.getSocket()));
             conn.connect();
             response = conn.sendRequest(requestJson);
             System.out.println("Pasando por el balanceador ...");
             conn.closeStream();
+            
             conn.disconnect();
+            
+            MeasureTime.endTime();
+            MeasureTime.elapsedTime();
+            
         } catch (IOException ex) {
             Logger.getLogger(LoadBalancerHandler.class.getName()).log(Level.SEVERE, null, ex);
         }
