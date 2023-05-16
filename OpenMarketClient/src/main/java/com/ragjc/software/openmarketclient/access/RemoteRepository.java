@@ -75,6 +75,17 @@ public class RemoteRepository implements IProductRepository{
             return null;
         }
     }
+
+    @Override
+    public List<Product> findByName(String name) {
+        try {
+            return productAccess.findByName(name);
+            
+        } catch (Exception ex) {
+            Logger.getLogger(RemoteRepository.class.getName()).log(Level.SEVERE, null, ex);
+            return null;
+        }
+    }
     
     
 }

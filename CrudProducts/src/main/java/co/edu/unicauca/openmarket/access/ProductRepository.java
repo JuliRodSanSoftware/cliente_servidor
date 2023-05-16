@@ -199,4 +199,30 @@ public class ProductRepository implements IProductRepository {
         return null;
     }
 
+    @Override
+    public List<Product> findByName(String name) {
+         List<Product> products = new ArrayList<>();
+        try {
+
+            String sql = "SELECT * FROM products  "
+                    + "WHERE name = ?";
+            PreparedStatement pstmt = conn.prepareStatement(sql);
+            pstmt.setString(1, name);
+            
+            ResultSet res = pstmt.executeQuery();
+            while (res.next()) {
+                Product prod = new Product();
+                prod.setProductId(res.getLong("productId"));
+                prod.setName(res.getString("name"));
+                prod.setDescription(res.getString("description"));
+                products.add(prod);
+            } 
+            //this.disconnect();
+            
+        } catch (SQLException ex) {
+            Logger.getLogger(ProductRepository.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return products;
+    }
+
 }

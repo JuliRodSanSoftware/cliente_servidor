@@ -2,6 +2,7 @@ package com.ragjc.software.openmarketclient.presentation;
 import com.ragjc.software.openmarketclient.domain.infra.Messages;
 import com.ragjc.software.openmarketclient.domain.service.ProductService;
 import com.ragjc.software.openmarketclient.presentation.commands.OMAddProductCommand;
+import com.ragjc.software.openmarketclient.presentation.commands.OMDeleteProductCommand;
 import com.ragjc.software.openmarketclient.presentation.commands.OMInvoker;
 import com.ragjc.software.openmarketcommons.domain.Product;
 import javax.swing.JOptionPane;
@@ -223,11 +224,20 @@ public class GUIProducts extends javax.swing.JFrame {
         }
         Long productId = Long.parseLong(id);
         if (Messages.showConfirmDialog("Está seguro que desea eliminar este producto?", "Confirmación") == JOptionPane.YES_NO_OPTION) {
-            if (productService.deleteProduct(productId)) {
+            
+            
+            Product product = new Product(productId, "", "", 0);
+            OMDeleteProductCommand comm= new OMDeleteProductCommand(product, productService);
+            ominvoker.addCommand(comm);
+            ominvoker.execute();
+            if (comm.result()) {
                 Messages.showMessageDialog("Producto eliminado con éxito", "Atención");
                 stateInitial();
                 cleanControls();
+            } else {
+                Messages.showMessageDialog("Error al eliminar, lo siento mucho", "Atención");
             }
+
         }
     }//GEN-LAST:event_btnEliminarActionPerformed
 

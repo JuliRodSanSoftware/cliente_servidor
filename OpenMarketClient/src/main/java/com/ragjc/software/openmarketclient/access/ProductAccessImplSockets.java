@@ -141,6 +141,35 @@ public class ProductAccessImplSockets implements IProductAccess{
             }
         }
     }
+    
+    @Override
+    public List<Product> findByName(String name) throws Exception {
+        String jsonResponse = null;
+        String requestJson = doFindNameProductsRequestJson(name);
+        System.out.println(requestJson);
+        try {
+            mySocket.connect();
+            jsonResponse = mySocket.sendRequest(requestJson);
+            mySocket.disconnect();
+
+        } catch (IOException ex) {
+            Logger.getLogger(ProductAccessImplSockets.class.getName()).log(Level.SEVERE, "No hubo conexión con el servidor", ex);
+        }
+        if (jsonResponse == null) {
+            throw new Exception("No se pudo conectar con el servidor. Revise la red o que el servidor esté escuchando. ");
+        } else {
+            if (jsonResponse.contains("error")) {
+                //Devolvió algún error
+                Logger.getLogger(ProductAccessImplSockets.class.getName()).log(Level.INFO, jsonResponse);
+                throw new Exception(extractMessages(jsonResponse));
+            } else {
+                //Encontró el customer
+                List<Product> products = jsonToProducts(jsonResponse);
+                Logger.getLogger(ProductAccessImplSockets.class.getName()).log(Level.INFO, "Lo que va en el JSon: ("+jsonResponse.toString()+ ")");
+                return products;
+            }
+        }
+    }
 
     @Override
     public List<Product> findAll() throws Exception {
@@ -206,6 +235,19 @@ public class ProductAccessImplSockets implements IProductAccess{
         Protocol protocol = new Protocol();
         protocol.setResource("products");
         protocol.setAction("get");
+
+        Gson gson = new Gson();
+        String requestJson = gson.toJson(protocol);
+
+        return requestJson;
+    }
+    
+    private String doFindNameProductsRequestJson(String name) {
+
+        Protocol protocol = new Protocol();
+        protocol.setResource("products_name");
+        protocol.setAction("get");
+        protocol.addParameter("name", name);
 
         Gson gson = new Gson();
         String requestJson = gson.toJson(protocol);

@@ -17,6 +17,8 @@ public interface IProductAccess {
     boolean edit(Long id, Product product) throws Exception;
     
     boolean delete(Long id) throws Exception;
+    
+    List<Product> findByName(String name) throws Exception;
 
     Product findById(Long id) throws Exception;
     

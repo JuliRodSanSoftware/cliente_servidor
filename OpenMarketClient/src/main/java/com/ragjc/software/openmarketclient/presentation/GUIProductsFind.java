@@ -5,6 +5,24 @@
  */
 package com.ragjc.software.openmarketclient.presentation;
 ;
+import com.ragjc.software.openmarketclient.domain.infra.Messages;
+import com.ragjc.software.openmarketclient.domain.service.ProductService;
+import com.ragjc.software.openmarketcommons.domain.Product;
+import java.util.List;
+import javax.swing.table.DefaultTableModel;
+import reloj.frameworkobsobs.Observador;
+import com.ragjc.software.openmarketclient.domain.service.ProductService;
+import com.ragjc.software.openmarketcommons.domain.Product;
+import java.util.ArrayList;
+import java.util.List;
+import javax.swing.table.DefaultTableModel;
+import reloj.frameworkobsobs.Observador;
+import com.ragjc.software.openmarketclient.domain.infra.Messages;
+import com.ragjc.software.openmarketclient.domain.service.ProductService;
+import com.ragjc.software.openmarketcommons.domain.Product;
+import java.util.List;
+import javax.swing.table.DefaultTableModel;
+import reloj.frameworkobsobs.Observador;
 import com.ragjc.software.openmarketclient.domain.service.ProductService;
 import com.ragjc.software.openmarketcommons.domain.Product;
 import java.util.List;
@@ -111,6 +129,11 @@ public class GUIProductsFind extends javax.swing.JDialog implements Observador{
         pnlNorth.add(txtSearch);
 
         btnSearch.setText("Buscar");
+        btnSearch.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSearchActionPerformed(evt);
+            }
+        });
         pnlNorth.add(btnSearch);
 
         btnSearchAll.setText("Buscar Todos");
@@ -143,6 +166,34 @@ public class GUIProductsFind extends javax.swing.JDialog implements Observador{
     private void btnSearchAllActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSearchAllActionPerformed
         fillTable(productService.findAllProducts());
     }//GEN-LAST:event_btnSearchAllActionPerformed
+
+    private void btnSearchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSearchActionPerformed
+        // TODO add your handling code here: String busqueda = txtSearch.getText();
+        String busqueda = txtSearch.getText();
+        
+        if (rdoId.isSelected()){
+            Long id = 0L;
+            List<Product> productByID = new ArrayList<>();
+            try{
+                id = Long.parseLong(busqueda);
+            }catch(Exception e){
+                Messages.showMessageWarning("El id ingresado no es válido", "Error");
+                fillTable(productByID);
+                return;
+            }
+
+            Product product = productService.findProductById(id);
+
+            if (product == null){
+                Messages.showMessageWarning("El id ingresado no se encuentra", "Alerta");
+                return;
+            }
+            productByID.add(product);
+            fillTable(productByID);
+        } else { 
+            fillTable(productService.findProductByName(busqueda));
+        } 
+    }//GEN-LAST:event_btnSearchActionPerformed
 
  
 

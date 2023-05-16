@@ -67,6 +67,13 @@ public class OpenMarketHandler  extends ServerHandler{
                     response = processGetProducts();
                 }
                 break;
+                
+            case "products_name":
+                if (protocolRequest.getAction().equals("get")) {
+                    // Consultar un customer
+                    response = processGetProductsName(protocolRequest);
+                }
+                break;
         }
         return response;
 
@@ -138,6 +145,13 @@ public class OpenMarketHandler  extends ServerHandler{
     private String processGetProducts() {
     
         return new Gson().toJson(service.findAllProducts());
+    }
+    
+    private String processGetProductsName(Protocol protocolRequest) {
+        
+        String name = protocolRequest.getParameters().get(0).getValue();
+    
+        return new Gson().toJson(service.findProductByName(name));
     }
     
 }

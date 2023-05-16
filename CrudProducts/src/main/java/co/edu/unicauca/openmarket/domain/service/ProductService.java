@@ -72,4 +72,11 @@ public class ProductService extends Observado{
         return repository.edit(productId, prod);
     }
 
+    public List<Product> findProductByName(String name) {
+        List<Product> products = new ArrayList<>();
+        products = repository.findByName(name);;
+
+        return products;
+    }
+
 }

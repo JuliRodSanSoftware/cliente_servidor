@@ -60,6 +60,10 @@ public class ProductService extends Observado{
         return repository.findById(id);
     }
     
+    public List<Product> findProductByName(String name){
+        return repository.findByName(name);
+    }
+    
     public boolean deleteProduct(Long id){
         boolean result;
         result = repository.delete(id);

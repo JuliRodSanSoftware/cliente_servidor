@@ -15,6 +15,8 @@ public interface IProductRepository {
     boolean edit(Long id, Product product);
     
     boolean delete(Long id);
+    
+    List<Product> findByName(String name);
 
     Product findById(Long id);
     
